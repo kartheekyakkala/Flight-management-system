@@ -1,0 +1,151 @@
+{% extends 'base.html' %}
+
+{% block title %}Edit Flight{% endblock %}
+
+{% block content %}
+<style>
+    .form-card {
+        background-color: #fff;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        padding: 20px;
+        width: 80%;
+        max-width: 600px;
+        margin: 20px auto;
+    }
+
+    .form-card h1 {
+        text-align: center;
+        margin-bottom: 20px;
+        color: #004d40;
+    }
+
+    .form-group {
+        margin-bottom: 15px;
+    }
+
+    .form-group label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: bold;
+        color: #333;
+    }
+
+    .form-group input, .form-group select {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        box-sizing: border-box;
+    }
+
+    .form-group input[type="datetime-local"] {
+        width: calc(100% - 22px);
+    }
+
+    .submit-btn {
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 16px;
+        width: 100%;
+    }
+
+    .submit-btn:hover {
+        background-color: #0056b3;
+    }
+
+    .error-message {
+        color: #dc3545;
+        margin-top: 10px;
+    }
+</style>
+
+<div class="form-card">
+    <h1>Edit Flight</h1>
+    <form id="flightForm" action="{{ url_for('edit_flight', id=flight['_id']) }}" method="POST">
+        <div class="form-group">
+            <label for="from_airport">From Airport</label>
+            <select id="from_airport" name="from_airport" required>
+                {% for airport in airports %}
+                    <option value="{{ airport['_id'] }}" {% if airport['_id'] == flight['from_airport'] %}selected{% endif %}>{{ airport['airport_name'] }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="to_airport">To Airport</label>
+            <select id="to_airport" name="to_airport" required>
+                {% for airport in airports2 %}
+                    <option value="{{ airport['_id'] }}" {% if airport['_id'] == flight['to_airport'] %}selected{% endif %}>{{ airport['airport_name'] }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="plane">Plane</label>
+            <select id="plane" name="plane" required>
+                {% for airplane in airplanes %}
+                    <option value="{{ airplane['_id'] }}" {% if airplane['_id'] == flight['plane'] %}selected{% endif %}>{{ airplane['name'] }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="fare">Fare</label>
+            <input type="number" id="fare" name="fare" step="0.01" value="{{ flight['fare'] }}" required>
+        </div>
+
+        <div class="form-group">
+            <label for="seats">Seats</label>
+            <input type="number" id="seats" name="seats" value="{{ flight['seats'] }}" required>
+        </div>
+
+        <div class="form-group">
+            <label for="takeoff">Takeoff</label>
+            <input type="datetime-local" id="takeoff" name="takeoff" value="{{ flight['takeoff'] }}" required>
+        </div>
+
+        <div class="form-group">
+            <label for="landing">Landing</label>
+            <input type="datetime-local" id="landing" name="landing" value="{{ flight['landing'] }}" required>
+        </div>
+
+        <div class="form-group">
+            <button type="submit" id="submitBtn" class="submit-btn">Update Flight</button>
+        </div>
+
+        <div id="error-message" class="error-message"></div>
+    </form>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const fromAirport = document.getElementById('from_airport');
+        const toAirport = document.getElementById('to_airport');
+        const submitBtn = document.getElementById('submitBtn');
+        const errorMessage = document.getElementById('error-message');
+        const form = document.getElementById('flightForm');
+
+        function validateAirports() {
+            if (fromAirport.value === toAirport.value) {
+                errorMessage.textContent = "From and To airports cannot be the same.";
+                submitBtn.disabled = true; // Disable submit button
+            } else {
+                errorMessage.textContent = "";
+                submitBtn.disabled = false; // Enable submit button
+            }
+        }
+
+        fromAirport.addEventListener('change', validateAirports);
+        toAirport.addEventListener('change', validateAirports);
+
+        // Initial validation on page load
+        validateAirports();
+    });
+</script>
+{% endblock %}

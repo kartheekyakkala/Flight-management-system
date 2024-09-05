@@ -1,0 +1,87 @@
+{% extends 'base.html' %}
+
+{% block title %}View Reservations{% endblock %}
+
+{% block content %}
+<div class="reservation-table">
+    <h1>Your Reservations</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>User</th>
+                <th>From Airport</th>
+                <th>To Airport</th>
+                <th>Plane</th>
+                <th>Takeoff Time</th>
+                <th>Number of Passengers</th>
+                <th>Passenger Details</th>
+
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for reservation in reservations %}
+            <tr>
+                <td>{{ reservation.user_email }}</td>
+                <td>{{ reservation.from_airport_name }}</td>
+                <td>{{ reservation.to_airport_name }}</td>
+                <td>{{ reservation.plane_name }}</td>
+                <td>{{ reservation.takeoff_time }}</td>
+                <td>{{ reservation.num_passengers }}</td>
+                <td>
+                    {% for passenger in reservation.passengers %}
+                        <p>{{ passenger.name }} (Seat: {{ passenger.seat_number }})</p>
+                    {% endfor %}
+                </td>
+                <td><a href="{{ url_for('generate_pass', reservation_id=reservation._id) }}" class="button">Generate Pass</a></td>            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<style>
+    .reservation-table {
+        max-width: 80%;
+        margin: 0 auto;
+        background-color: #fff;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        border-radius: 8px;
+        padding: 20px;
+        overflow-x: auto; /* Allows horizontal scrolling if needed */
+    }
+    .reservation-table h1 {
+        text-align: center;
+        color: #004d40; /* Header color */
+        margin-bottom: 20px;
+    }
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+    th, td {
+        padding: 12px;
+        text-align: left;
+        border-bottom: 1px solid #ddd;
+    }
+    th {
+        background-color: #004d40; /* Header background color */
+        color: white;
+    }
+    tr:nth-child(even) {
+        background-color: #f2f2f2;
+    }
+    .button {
+        display: inline-block;
+        padding: 8px 16px;
+        background-color: #21796a;
+        color: white;
+        text-decoration: none;
+        font-weight: bold;
+        border-radius: 4px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+    .button:hover {
+        background-color: #004d40; /* Button hover color */
+    }
+</style>
+{% endblock %}

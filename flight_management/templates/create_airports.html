@@ -1,0 +1,112 @@
+{% extends 'base.html' %}
+
+{% block title %}Create Airport{% endblock %}
+
+{% block content %}
+<style>
+    /* Styling for Create Airport Page */
+    .container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: calc(100vh - 60px); /* Adjust height to account for the nav bar */
+        padding: 20px;
+    }
+
+    .card {
+        width: 100%;
+        max-width: 600px;
+        background-color: #fff;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        padding: 20px;
+        box-sizing: border-box;
+    }
+
+    h1 {
+        text-align: center;
+        color: #004d40; /* Dark teal */
+    }
+
+    form {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    label {
+        font-size: 16px;
+        color: #333;
+    }
+
+    input, textarea {
+        width: 95%;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        font-size: 14px;
+    }
+
+    input:focus, textarea:focus {
+        border-color: #004d40; /* Blue color for focus state */
+        outline: none;
+    }
+
+    button {
+        background-color: #004d40; /* Dark teal */
+        color: #fff;
+        border: none;
+        padding: 10px 15px;
+        border-radius: 5px;
+        font-size: 16px;
+        cursor: pointer;
+    }
+
+    button:hover {
+        background-color: #00332a; /* Slightly darker teal */
+    }
+</style>
+
+<div class="container">
+    <div class="card">
+        <h1>Create Airport</h1>
+        <form action="/create_airport" method="post">
+            <div class="form-group">
+                <label for="airport_name">Airport Name</label>
+                <input type="text" id="airport_name" name="airport_name" required>
+            </div>
+            <div class="form-group">
+                <label for="short_name">Short Name</label>
+                <input type="text" id="short_name" name="short_name" required>
+            </div>
+            <div class="form-group">
+                <label for="location">Location</label>
+                <input type="text" id="location" name="location" required>
+            </div>
+            <div class="form-group">
+                <label for="address">Address</label>
+                <input type="text" id="address" name="address" required>
+            </div>
+            <div class="form-group">
+                <label for="city">City</label>
+                <input type="text" id="city" name="city" required>
+            </div>
+            <div class="form-group">
+                <label for="state">State</label>
+                <input type="text" id="state" name="state" required>
+            </div>
+            <div class="form-group">
+                <label for="zip">Zip Code</label>
+                <input type="text" id="zip" name="zip" required>
+            </div>
+            <div class="form-group">
+                <label for="description">Description</label>
+                <textarea id="description" name="description" rows="4" required></textarea>
+            </div>
+            <button type="submit">Create Airport</button>
+        </form>
+    </div>
+</div>
+
+{% endblock %}

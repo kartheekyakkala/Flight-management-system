@@ -1,0 +1,267 @@
+{% extends 'base.html' %}
+
+{% block title %}Flight Booking{% endblock %}
+
+{% block content %}
+<style>
+    .booking-container {
+        max-width: 800px;
+        margin: 20px auto;
+        padding: 20px;
+        background-color: #fff;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .booking-container h1 {
+        text-align: center;
+        color: #004d40;
+    }
+
+    .booking-container .form-group {
+        margin-bottom: 15px;
+    }
+
+    .booking-container .form-group label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: bold;
+        color: #333;
+    }
+
+    .booking-container .form-group input, 
+    .booking-container .form-group select {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        box-sizing: border-box;
+    }
+
+    .booking-container .form-group input[type="number"] {
+        width: calc(100% - 22px);
+    }
+
+    .booking-container .passenger-details {
+        margin-top: 20px;
+    }
+
+    .booking-container .passenger-details .form-group {
+        margin-bottom: 15px;
+    }
+
+    .booking-container .passenger-details label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: bold;
+        color: #333;
+    }
+
+    .booking-container .passenger-details input {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        box-sizing: border-box;
+    }
+
+    .booking-container .final-amount {
+        margin-top: 20px;
+        font-weight: bold;
+        font-size: 18px;
+        color: #004d40;
+        text-align: center;
+    }
+
+    .booking-container .submit-btn {
+        background-color: #28a745;
+        color: #fff;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 16px;
+        width: 100%;
+        margin-top: 20px;
+    }
+
+    .booking-container .submit-btn:hover {
+        background-color: #218838;
+    }
+</style>
+
+<div class="booking-container">
+    <h1>Flight Booking</h1>
+    <form id="bookingForm" action="/make_payment" method="POST" onsubmit="return validateForm()">
+        <div class="form-group">
+            <label for="flightDetails">Flight Details</label>
+            <div class="flight-details">
+                <h2>Flight Information</h2>
+                <p><strong>From:</strong> {{ flight.from_airport_name }}</p>
+                <p><strong>To:</strong> {{ flight.to_airport_name }}</p>
+                <p><strong>Plane Name:</strong> {{ flight.plane_name }}</p>
+                <p><strong>Fare:</strong> ${{ flight.fare }}</p>
+                <p><strong>Available Seats:</strong> 
+                    <span id="availableSeats">{{ flight.seats }}</span>
+                </p>
+                <p><strong>Takeoff Time:</strong> {{ flight.takeoff }}</p>
+                <p><strong>Landing Time:</strong> {{ flight.landing }}</p>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="seatType">Seat Type</label>
+            <select id="seatType" name="seatType" required>
+                <option value="" disabled selected>Select Seat Type</option>
+                <option value="first_class">First Class</option>
+                <option value="business_class">Business Class</option>
+                <option value="economy_class">Economy Class</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="numPassengers">Number of Passengers</label>
+            <input type="number" id="numPassengers" name="numPassengers" min="1" required>
+        </div>
+
+        <div class="passenger-details" id="passengerDetails">
+            <!-- Passenger details fields will be generated here -->
+        </div>
+
+        <div class="final-amount" id="finalAmount">Total Amount: $0.00</div>
+
+        <div class="form-group">
+            <label for="cardName">Cardholder Name</label>
+            <input type="text" id="cardName" name="cardName" required>
+        </div>
+        <div class="form-group">
+            <label for="cardNumber">Card Number</label>
+            <input type="text" id="cardNumber" name="cardNumber" required>
+        </div>
+        <div class="form-group">
+            <label for="cardCvv">CVV</label>
+            <input type="text" id="cardCvv" name="cardCvv" required>
+        </div>
+        <div class="form-group">
+            <label for="cardExp">Expiration Date</label>
+            <input type="month" id="cardExp" name="cardExp" required>
+        </div>
+        <input type="hidden" name="flight_id" value="{{ flight._id }}">
+        <button type="submit" class="submit-btn">Book Flight</button>
+    </form>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const numPassengers = document.getElementById('numPassengers');
+        const seatType = document.getElementById('seatType');
+        const passengerDetails = document.getElementById('passengerDetails');
+        const finalAmount = document.getElementById('finalAmount');
+        const availableSeats = {
+            'first_class': {{ flight.seats.first_class }},
+            'business_class': {{ flight.seats.business_class }},
+            'economy_class': {{ flight.seats.economy_class }}
+        };
+        const flightFare = {{ flight.fare }}; // Replace this with the actual fare of the flight
+
+        // Initialize number of passengers to 0
+        numPassengers.value = 0;
+        generatePassengerFields();
+        updateFinalAmount();
+
+        numPassengers.addEventListener('input', function() {
+            generatePassengerFields();
+            updateFinalAmount();
+        });
+
+        seatType.addEventListener('change', function() {
+            updateFinalAmount();
+        });
+
+        function generatePassengerFields() {
+            const numberOfPassengers = numPassengers.value;
+            passengerDetails.innerHTML = ''; // Clear previous fields
+
+            for (let i = 0; i < numberOfPassengers; i++) {
+                const passengerDiv = document.createElement('div');
+                passengerDiv.classList.add('form-group');
+
+                const nameLabel = document.createElement('label');
+                nameLabel.textContent = `Passenger ${i + 1} Name`;
+                passengerDiv.appendChild(nameLabel);
+
+                const nameInput = document.createElement('input');
+                nameInput.type = 'text';
+                nameInput.name = `passenger${i + 1}Name`;
+                nameInput.required = true;
+                passengerDiv.appendChild(nameInput);
+
+                const idLabel = document.createElement('label');
+                idLabel.textContent = `Passenger ${i + 1} ID Number`;
+                passengerDiv.appendChild(idLabel);
+
+                const idInput = document.createElement('input');
+                idInput.type = 'text';
+                idInput.name = `passenger${i + 1}Id`;
+                idInput.required = true;
+                passengerDiv.appendChild(idInput);
+
+                const addressLabel = document.createElement('label');
+                addressLabel.textContent = `Passenger ${i + 1} Address`;
+                passengerDiv.appendChild(addressLabel);
+
+                const addressInput = document.createElement('input');
+                addressInput.type = 'text';
+                addressInput.name = `passenger${i + 1}Address`;
+                addressInput.required = true;
+                passengerDiv.appendChild(addressInput);
+
+                const ssnLabel = document.createElement('label');
+                ssnLabel.textContent = `Passenger ${i + 1} SSN`;
+                passengerDiv.appendChild(ssnLabel);
+
+                const ssnInput = document.createElement('input');
+                ssnInput.type = 'text';
+                ssnInput.name = `passenger${i + 1}Ssn`;
+                ssnInput.required = true;
+                passengerDiv.appendChild(ssnInput);
+
+                passengerDetails.appendChild(passengerDiv);
+            }
+
+            updateFinalAmount();
+        }
+
+        function updateFinalAmount() {
+            const numberOfPassengers = parseInt(numPassengers.value) || 0;
+            const selectedSeatType = seatType.value;
+            const availableSeatsForType = availableSeats[selectedSeatType] || 0;
+
+            if (numberOfPassengers > availableSeatsForType) {
+                alert('Seats limit exceeded. Please reduce the number of passengers.');
+                numPassengers.value = 0; // Reset the number of passengers
+                generatePassengerFields(); // Regenerate fields
+                return;
+            }
+
+            const totalAmount = numberOfPassengers * flightFare;
+            const tax = totalAmount * 0.08;
+            const finalAmountValue = totalAmount + tax;
+            finalAmount.textContent = `Total Amount: $${finalAmountValue.toFixed(2)}`;
+        }
+
+        window.validateForm = function() {
+            const numberOfPassengers = parseInt(numPassengers.value) || 0;
+            const selectedSeatType = seatType.value;
+            const availableSeatsForType = availableSeats[selectedSeatType] || 0;
+
+            if (numberOfPassengers > availableSeatsForType) {
+                alert('Seats limit exceeded. Please reduce the number of passengers.');
+                return false;
+            }
+            return true;
+        }
+    });
+</script>
+{% endblock %}

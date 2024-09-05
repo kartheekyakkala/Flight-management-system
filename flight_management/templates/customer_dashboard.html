@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+
+{% block title %}Customer Dashboard{% endblock %}
+
+{% block content %}
+<style>
+    .dashboard-container {
+        display: flex;
+        gap: 20px;
+        padding: 20px;
+        justify-content: center; /* Center the cards horizontally */
+    }
+
+    .dashboard-card {
+        background-color: #fff;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        padding: 20px;
+        width: 30%; /* Adjusted width for 1x3 grid */
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .dashboard-card i {
+        font-size: 50px;
+        margin-bottom: 10px;
+        color: #004d40; /* Dark green icon color */
+    }
+
+    .dashboard-card h2 {
+        margin: 10px 0;
+        color: #004d40; /* Dark green text color */
+    }
+
+    .dashboard-card p {
+        margin: 10px 0;
+        color: #333;
+    }
+
+    .dashboard-card a {
+        text-decoration: none;
+        color: #fff;
+        background-color: #28a745; /* Green button color */
+        padding: 10px 15px;
+        border-radius: 4px;
+        font-size: 14px;
+    }
+
+    .dashboard-card a:hover {
+        background-color: #218838;
+    }
+
+    @media (max-width: 768px) {
+        .dashboard-card {
+            width: 100%; /* Full width on smaller screens */
+        }
+    }
+</style>
+
+<div class="dashboard-container">
+    <div class="dashboard-card">
+        <i class="fa fa-plane"></i>
+        <h2>Flights</h2>
+        <p>View and manage your flights</p>
+        <a href="/cust_view_flights">Go to Flights</a>
+    </div>
+    <div class="dashboard-card">
+        <i class="fa fa-credit-card"></i>
+        <h2>Payment History</h2>
+        <p>View your payment history</p>
+        <a href="/payment_history">Go to Payment History</a>
+    </div>
+    <div class="dashboard-card">
+        <i class="fa fa-ticket"></i>
+        <h2>Boarding Pass</h2>
+        <p>View and print your boarding passes</p>
+        <a href="/reservations">Go to Boarding Pass</a>
+    </div>
+</div>
+{% endblock %}

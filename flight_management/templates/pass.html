@@ -1,0 +1,118 @@
+{% extends 'base.html' %}
+
+{% block title %}Boarding Pass{% endblock %}
+
+{% block content %}
+    <div class="container">
+        {% for passenger in reservation.passengers %}
+        <div class="ticket">
+            <div class="top">
+                <h1>Boarding Pass</h1>
+                <div class="big">
+                    <p class="from">{{ reservation.from_airport_name[:3].upper() }}</p>
+                    <p class="to">{{ reservation.to_airport_name[:3].upper() }}</p>
+                </div>
+                <div class="top--side">
+                    <p>{{ reservation.from_airport_name }}</p>
+                    <p>{{ reservation.to_airport_name }}</p>
+                </div>
+            </div>
+            <div class="bottom">
+                <div class="column">
+                    <div class="row row-2">
+                        <p class="row--center"><span>Departs:</span> {{ reservation.takeoff_time.strftime('%I:%M %p') }}</p>
+                        <p class="row--right"><span>Arrives:</span> {{ reservation.arrival.strftime('%I:%M %p') }}</p>
+                    </div>
+                    <div class="row row-3">
+                        <p><span>Passenger:</span> {{ passenger.name }}</p>
+                        <p class="row--center"><span>Seat:</span> {{ passenger.seat_number }}</p>
+                        <p class="row--right"><span>Group:</span>3</p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #f4f4f4;
+        }
+
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .ticket {
+            width: 300px;
+            margin: 10px;
+            background: #fff;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .top {
+            padding: 10px;
+            border-bottom: 1px solid #ccc;
+            text-align: center;
+        }
+
+        .top h1 {
+            margin: 0;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .top .big {
+            margin: 10px 0;
+        }
+
+        .top .big .from,
+        .top .big .to {
+            font-size: 24px;
+        }
+
+        .top--side {
+            margin-top: 10px;
+        }
+
+        .bottom {
+            padding: 10px;
+        }
+
+        .bottom .column {
+            width: 100%;
+        }
+
+        .bottom .row {
+            margin: 10px 0;
+        }
+
+        .bottom .row--center,
+        .bottom .row--right {
+            text-align: center;
+        }
+
+        .bottom .row--center p,
+        .bottom .row--right p {
+            margin: 5px 0;
+        }
+
+        .bottom .bar--code {
+            text-align: center;
+        }
+
+        .bar--code img {
+            width: 100%;
+        }
+    </style>
+
+{% endblock %}

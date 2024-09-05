@@ -1,0 +1,99 @@
+{% extends 'base.html' %}
+
+{% block title %}View Airplanes{% endblock %}
+
+{% block content %}
+<style>
+    .container {
+        padding: 20px;
+    }
+
+    .card-list {
+        list-style-type: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .card-item {
+        display: flex;
+        align-items: center;
+        background-color: #fff;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        margin: 10px 0;
+        padding: 15px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        justify-content: space-between;
+    }
+
+    .card-content {
+        display: flex;
+        flex: 1;
+        flex-direction: row;
+        align-items: center;
+    }
+
+    .card-content div {
+        margin-right: 20px;
+    }
+
+    .card-content h2 {
+        margin: 0;
+        color: #004d40; /* Dark teal */
+    }
+
+    .card-content p {
+        margin: 0;
+        color: #333;
+    }
+
+    .card-buttons {
+        display: flex;
+        align-items: center;
+    }
+
+    .card-buttons a {
+        text-decoration: none;
+        color: #fff;
+        background-color: #007bff;
+        padding: 10px 15px;
+        border-radius: 4px;
+        margin: 0 5px;
+        font-size: 14px;
+        display: inline-block;
+        text-align: center;
+    }
+
+    .card-buttons a:hover {
+        background-color: #0056b3;
+    }
+
+    .card-buttons a.delete {
+        background-color: #dc3545;
+    }
+
+    .card-buttons a.delete:hover {
+        background-color: #c82333;
+    }
+</style>
+
+<div class="container">
+
+    <ul class="card-list">
+        <h1>View Airplanes</h1>
+        {% for airplane in airplanes %}
+        <li class="card-item">
+            <div class="card-content">
+                <div><h2>{{ airplane['name'] }}</h2></div>
+                <div><p><strong>Airline:</strong> {{ airplane['airline'] }}</p></div>
+                <div><p><strong>Capacity:</strong> {{ airplane['capacity'] }}</p></div>
+                <div><p><strong>Seats:</strong> {{ airplane['seats'] }}</p></div>
+            </div>
+            <div class="card-buttons">
+                <a href="{{ url_for('edit_airplane', id=airplane['_id']) }}">Edit</a>
+            </div>
+        </li>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock %}

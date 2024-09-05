@@ -1,0 +1,167 @@
+{% extends 'base.html' %}
+
+{% block title %}Create Flight{% endblock %}
+
+{% block content %}
+<style>
+    .form-card {
+        background-color: #fff;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        padding: 20px;
+        width: 80%;
+        max-width: 600px;
+        margin: 20px auto; /* Center form horizontally and add vertical spacing */
+    }
+
+    .form-card h1 {
+        text-align: center;
+        margin-bottom: 20px;
+        color: #004d40; /* Dark teal */
+    }
+
+    .form-group {
+        margin-bottom: 15px;
+    }
+
+    .form-group label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: bold;
+        color: #333;
+    }
+
+    .form-group input, .form-group select {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        box-sizing: border-box; /* Include padding and border in element's total width and height */
+    }
+
+    .form-group input[type="datetime-local"] {
+        width: calc(100% - 22px); /* Adjust width for padding and border */
+    }
+
+    .submit-btn {
+        background-color: #004d40;
+        color: #fff;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 16px;
+        width: 100%; /* Full-width button */
+    }
+
+    .submit-btn:hover {
+        background-color: #00332a;
+    }
+
+    .error-message {
+        color: red;
+        margin-top: 10px;
+        text-align: center;
+    }
+</style>
+
+<div class="container">
+    <div class="form-card">
+        <h1>Create Flight</h1>
+        <form action="{{ url_for('create_flight') }}" method="POST" id="flightForm">
+            <div class="form-group">
+                <label for="from_airport">From Airport</label>
+                <select id="from_airport" name="from_airport" required>
+                    <option value="">Select Airport</option>
+                    {% for airport in airports %}
+                        <option value="{{ airport['_id'] }}">{{ airport['airport_name'] }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="to_airport">To Airport</label>
+                <select id="to_airport" name="to_airport" required>
+                    <option value="">Select Airport</option>
+                    {% for airport in airports %}
+                        <option value="{{ airport['_id'] }}">{{ airport['airport_name'] }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="plane">Plane</label>
+                <select id="plane" name="plane" required>
+                    <option value="">Select Plane</option>
+                    {% for airplane in airplanes %}
+                        <option value="{{ airplane['_id'] }}">{{ airplane['name'] }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="fare">Fare</label>
+                <input type="number" id="fare" name="fare" step="0.01" required>
+            </div>
+
+            <div class="form-group">
+                <label for="seats_first">First Class Seats</label>
+                <input type="number" id="seats_first" name="first_class_seats" required>
+            </div>
+
+            <div class="form-group">
+                <label for="seats_business">Business Class Seats</label>
+                <input type="number" id="seats_business" name="business_class_seats" required>
+            </div>
+
+            <div class="form-group">
+                <label for="seats_economy">Economy Class Seats</label>
+                <input type="number" id="seats_economy" name="economy_class_seats" required>
+            </div>
+
+            <div class="form-group">
+                <label for="takeoff">Takeoff</label>
+                <input type="datetime-local" id="takeoff" name="takeoff" required>
+            </div>
+
+            <div class="form-group">
+                <label for="landing">Landing</label>
+                <input type="datetime-local" id="landing" name="landing" required>
+            </div>
+
+            <div class="form-group">
+                <button type="submit" class="submit-btn" id="submitBtn">Create Flight</button>
+            </div>
+
+            <div class="error-message" id="error-message"></div>
+        </form>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const fromAirport = document.getElementById('from_airport');
+        const toAirport = document.getElementById('to_airport');
+        const submitBtn = document.getElementById('submitBtn');
+        const errorMessage = document.getElementById('error-message');
+        const form = document.getElementById('flightForm');
+
+        function validateAirports() {
+            if (fromAirport.value === toAirport.value) {
+                alert("From and To airports cannot be the same.");
+                form.reset(); // Clear the form
+                errorMessage.textContent = ""; // Clear any previous error message
+                submitBtn.disabled = false; // Enable submit button again
+            } else {
+                submitBtn.disabled = false;
+                errorMessage.textContent = "";
+            }
+        }
+
+        fromAirport.addEventListener('change', validateAirports);
+        toAirport.addEventListener('change', validateAirports);
+    });
+</script>
+
+{% endblock %}

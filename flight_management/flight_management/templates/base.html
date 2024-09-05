@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Flight Management{% endblock %}</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #e9ecef; /* Light background color */
+            margin: 0;
+            padding: 0;
+        }
+
+        nav {
+            background-color: #004d40; /* Dark teal */
+            padding: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: #fff;
+        }
+
+        .navbar-left, .navbar-right, .navbar-center {
+            display: flex;
+            align-items: center;
+        }
+
+        .navbar-left {
+            font-size: 22px;
+            font-weight: bold;
+        }
+
+        .navbar-center {
+            flex: 1;
+            justify-content: center;
+            text-align: center;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .navbar-right {
+            display: flex;
+            align-items: center;
+        }
+
+        .navbar-right a {
+            color: #fff;
+            text-decoration: none;
+            margin: 0 15px;
+            display: flex;
+            align-items: center;
+            font-size: 16px;
+        }
+
+        .navbar-right a i {
+            margin-right: 8px;
+        }
+
+        .navbar-right a:hover {
+            color: #80cbc4; /* Light teal */
+        }
+
+        .navbar-right .username {
+            margin-right: 20px;
+            font-size: 16px;
+        }
+
+        .container {
+            display: flex;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .dashboard-menu ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .dashboard-menu ul li {
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            margin: 10px 0;
+            padding: 10px;
+        }
+
+        .dashboard-menu ul li a {
+            text-decoration: none;
+            color: #004d40; /* Dark teal */
+            display: flex;
+            align-items: center;
+        }
+
+        .dashboard-menu ul li a i {
+            margin-right: 8px;
+        }
+
+        .dashboard-menu ul li a:hover {
+            color: #80cbc4; /* Light teal */
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="navbar-left">
+            Flight  Management
+        </div>
+        <div class="navbar-center">
+            {% if 'role' in session %}
+                {% if session['role'] == 'admin' %}
+                    Admin Dashboard
+                {% elif session['role'] == 'user' %}
+                    User Dashboard
+                {% endif %}
+            {% else %}
+                Home
+            {% endif %}
+        </div>
+        <div class="navbar-right">
+            {% if 'role' in session %}
+            {% if session['role'] == 'admin' %}
+                <a href="/admin_dashboard"><i class="fa fa-home"></i> Home</a>
+                <a href="/view_airplanes"><i class="fa fa-plane"></i> Airplanes</a>
+                <a href="/view_airports"><i class="fa fa-building"></i> Airports</a>
+                <a href="/view_flights"><i class="fa fa-flight"></i> Flights</a>
+                <a href="/adm_payment_history"><i class="fa fa-book"></i> Bookings</a>
+                <a href="{{ url_for('logout') }}"><i class="fa fa-sign-out-alt"></i> Logout</a>
+            {% elif session['role'] == 'customer' %}
+                <a href="/customer_dashboard"><i class="fa fa-home"></i> Home</a>
+                <a href="/cust_view_flights"><i class="fa fa-plane"></i> Flights</a>
+                <a href="/payment_history"><i class="fa fa-history"></i> History</a>
+                <a href="/reservations"><i class="fa fa-id-badge"></i> Boarding Pass</a>
+                <a href="{{ url_for('logout') }}"><i class="fa fa-sign-out-alt"></i> Logout</a>
+            {% endif %}
+            {% else %}
+                <a href="#"><i class="fa fa-home"></i> Home</a>
+            {% endif %}
+        </div>
+    </nav>
+
+    <div class="container">
+        {% block content %}
+        {% endblock %}
+    </div>
+</body>
+</html>

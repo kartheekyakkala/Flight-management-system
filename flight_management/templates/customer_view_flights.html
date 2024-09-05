@@ -1,0 +1,100 @@
+{% extends 'base.html' %}
+
+{% block title %}View Flights{% endblock %}
+
+{% block content %}
+<style>
+    .container {
+        padding: 20px;
+    }
+
+    .card-list {
+        list-style-type: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .card-item {
+        display: flex;
+        align-items: center;
+        background-color: #fff;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        margin: 10px 0;
+        padding: 15px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        justify-content: space-between;
+    }
+
+    .card-content {
+        display: flex;
+        flex: 1;
+        flex-direction: row;
+        align-items: center;
+    }
+
+    .card-content div {
+        margin-right: 20px;
+    }
+
+    .card-content h2 {
+        margin: 0;
+        color: #004d40; /* Dark teal */
+    }
+
+    .card-content p {
+        margin: 0;
+        color: #333;
+    }
+
+    .card-buttons {
+        display: flex;
+        align-items: center;
+    }
+
+    .card-buttons a {
+        text-decoration: none;
+        color: #fff;
+        background-color: #007bff;
+        padding: 10px 15px;
+        border-radius: 4px;
+        margin: 0 5px;
+        font-size: 14px;
+        display: inline-block;
+        text-align: center;
+    }
+
+    .card-buttons a:hover {
+        background-color: #0056b3;
+    }
+
+    .card-buttons a.delete {
+        background-color: #dc3545;
+    }
+
+    .card-buttons a.delete:hover {
+        background-color: #c82333;
+    }
+</style>
+
+<div class="container">
+    <ul class="card-list">
+        <h1>View Flights</h1>
+        {% for flight in flights %}
+        <li class="card-item">
+            <div class="card-content">
+                <div><h2>{{ flight['from_airport_name'] }} - {{ flight['to_airport_name'] }}</h2></div>
+                <div><p><strong>Plane:</strong> {{ flight['plane_name'] }}</p></div>
+                <div><p><strong>Fare:</strong> ${{ flight['fare'] }}</p></div>
+                <div><p><strong>Seats:</strong>  First: <strong>{{flight['first_class_seats']}}</strong>, business : <strong>{{flight['business_class_seats']}}</strong>, economy : <strong>{{flight['economy_class_seats']}}</strong></p></div>
+                <div><p><strong>Takeoff:</strong> {{ flight['takeoff'] }}</p></div>
+                <div><p><strong>Landing:</strong> {{ flight['landing'] }}</p></div>
+            </div>
+            <div class="card-buttons">
+                <a href="{{ url_for('book_flight', flight_id=flight['_id']) }}">Book</a> <!-- Book link -->
+            </div>
+        </li>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock %}

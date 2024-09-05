@@ -1,0 +1,112 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<style>
+/* Dashboard Styling */
+.dashboard {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr); /* 5-column grid layout */
+    gap: 20px;
+    padding: 20px;
+    background-color: #e9ecef; /* Light background color */
+}
+
+.card {
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    text-align: center;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.card i {
+    font-size: 40px;
+    color: #004d40; /* Dark teal */
+    margin-bottom: 10px;
+}
+
+.card h2 {
+    margin: 10px 0;
+    font-size: 18px;
+    color: #333;
+}
+
+.card p {
+    color: #666;
+    font-size: 14px;
+}
+
+.btn {
+    display: inline-block;
+    margin-top: 15px;
+    padding: 10px 20px;
+    color: #fff;
+    background: #004d40; /* Dark teal */
+    text-decoration: none;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+.btn:hover {
+    background: #00251a; /* Darker teal */
+}
+
+</style>
+
+<div class="dashboard">
+
+    <div class="card">
+        <i class="fa fa-building"></i>
+        <h2>Airports</h2>
+        <p>Manage airports</p>
+        <a href="/create_airport" class="btn">Create Airports</a>
+        <a href="/view_airports" class="btn">Edit Airports</a>
+    </div>
+    <div class="card">
+        <i class="fa fa-plane"></i>
+        <h2>Airplanes</h2>
+        <p>Manage airplanes</p>
+        <a href="/create_airplane" class="btn">Create Airplanes</a>
+        <a href="/view_airplanes" class="btn">Edit Airplanes</a>
+        
+    </div>
+    <div class="card">
+        <i class="fa fa-plane-departure"></i>
+        <h2>Flights</h2>
+        <p>Manage flights</p>
+        <a href="/create_flight" class="btn">Create Flights</a>
+        <a href="/view_flights" class="btn">Edit Flights</a>
+    </div>
+    <!-- <div class="card">
+        <i class="fa fa-edit"></i>
+        <h2>Edit Airports</h2>
+        <p>Edit existing airports</p>
+        <a href="/view_airports" class="btn">Edit Airports</a>
+    </div>
+    <div class="card">
+        <i class="fa fa-pencil-alt"></i>
+        <h2>Edit Airplanes</h2>
+        <p>Edit existing airplanes</p>
+        <a href="/view_airplanes" class="btn">Edit Airplanes</a>
+    </div>
+    <div class="card">
+        <i class="fa fa-pen"></i>
+        <h2>Edit Flights</h2>
+        <p>Edit existing flights</p>
+        <a href="/view_flights" class="btn">Edit Flights</a>
+    </div> -->
+    <div class="card">
+        <i class="fa fa-dollar-sign"></i>
+        <h2>Payments</h2>
+        <p>Manage payments</p>
+        <a href="/adm_payment_history" class="btn">Go to Payments</a>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+
+{% block title %}Edit Airport{% endblock %}
+
+{% block content %}
+<style>
+    .form-card {
+        background-color: #fff;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        padding: 20px;
+        width: 80%;
+        max-width: 600px;
+        margin: 20px auto;
+    }
+
+    .form-card h1 {
+        text-align: center;
+        margin-bottom: 20px;
+        color: #004d40; /* Dark teal */
+    }
+
+    .form-group {
+        margin-bottom: 15px;
+    }
+
+    .form-group label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: bold;
+        color: #333;
+    }
+
+    .form-group input, .form-group textarea {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        box-sizing: border-box;
+    }
+
+    .submit-btn {
+        background-color: #004d40; /* Dark teal */
+        color: #fff;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 16px;
+        width: 100%;
+    }
+
+    .submit-btn:hover {
+        background-color: #002b20; /* Darker teal for hover effect */
+    }
+</style>
+
+<div class="form-card">
+    <h1>Edit Airport</h1>
+    <form action="{{ url_for('edit_airport', id=airport['_id']) }}" method="POST">
+        <div class="form-group">
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name" value="{{ airport['airport_name'] }}" required>
+        </div>
+        
+        <div class="form-group">
+            <label for="short_name">Short Name:</label>
+            <input type="text" id="short_name" name="short_name" value="{{ airport['short_name'] }}" required>
+        </div>
+        
+        <div class="form-group">
+            <label for="location">Location:</label>
+            <input type="text" id="location" name="location" value="{{ airport['location'] }}" required>
+        </div>
+        
+        <div class="form-group">
+            <label for="description">Description:</label>
+            <textarea id="description" name="description" required>{{ airport['description'] }}</textarea>
+        </div>
+        
+        <button type="submit" class="submit-btn">Update Airport</button>
+    </form>
+</div>
+{% endblock %}

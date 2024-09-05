@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Authentication - Flight Management System</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .form-switch {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .form-switch button {
+            padding: 10px 20px;
+            border: none;
+            background-color: #004d40;
+            color: #fff;
+            cursor: pointer;
+        }
+
+        .form-switch button.active {
+            background-color: #002d26;
+        }
+
+        .form-switch button:not(.active):hover {
+            background-color: #00695c;
+        }
+
+        .form-container {
+            width: 90%;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            box-sizing: border-box;
+            overflow-y: auto;
+            max-height: 80vh;
+        }
+
+        .form-container::-webkit-scrollbar {
+            width: 0;  /* Remove scrollbar space */
+            background: transparent;  /* Optional: just make scrollbar invisible */
+        }
+
+        .form-container h1 {
+            text-align: center;
+            color: #004d40;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 10px;
+        }
+
+        .form-group label {
+            margin-bottom: 5px;
+            font-size: 14px;
+            color: #333;
+        }
+
+        .form-group input, 
+        .form-group select {
+            width: 90%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+
+        .form-group input:focus, 
+        .form-group select:focus {
+            border-color: #004d40;
+            outline: none;
+        }
+
+        .form-container button {
+            width: 100%;
+            background-color: #004d40;
+            color: #fff;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .form-container button:hover {
+            background-color: #00332a;
+        }
+    </style>
+    <script>
+        function showForm(formType) {
+            if (formType === 'login') {
+                document.getElementById('loginForm').style.display = 'block';
+                document.getElementById('registerForm').style.display = 'none';
+                document.getElementById('loginBtn').classList.add('active');
+                document.getElementById('registerBtn').classList.remove('active');
+            } else {
+                document.getElementById('loginForm').style.display = 'none';
+                document.getElementById('registerForm').style.display = 'block';
+                document.getElementById('loginBtn').classList.remove('active');
+                document.getElementById('registerBtn').classList.add('active');
+            }
+        }
+
+        function validatePassword() {
+    var password = document.getElementById("pswd").value;
+    var confirmPassword = document.getElementById("confirm_password").value;
+    
+    console.log("Password:", password);
+    console.log("Confirm Password:", confirmPassword);
+    
+    if (password === confirmPassword) {
+        document.getElementById("passwordError").style.display = "none";
+        return true;
+    } else {
+        document.getElementById("passwordError").style.display = "block";
+        return false;
+    }
+}
+    </script>
+</head>
+<body onload="showForm('login')">
+    <div class="container">
+        <div class="form-switch">
+            <button id="loginBtn" onclick="showForm('login')">Login</button>
+            <button id="registerBtn" onclick="showForm('register')">Register</button>
+        </div>
+        <div id="loginForm" class="form-container">
+            <h1>Login</h1>
+            <form method="post" action="/login">
+                <input type="hidden" name="form_type" value="login">
+                <div class="form-group">
+                    <label for="role">Role:</label>
+                    <select id="role" name="role" required>
+                        <option value="admin">Admin</option>
+                        <option value="customer">Customer</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email:</label>
+                    <input type="text" id="email" name="identifier" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password:</label>
+                    <input type="password" id="password" name="password" required>
+                </div>
+                <button type="submit">Login</button>
+            </form>
+        </div>
+        <div id="registerForm" class="form-container" style="display:none;">
+            <h1>Register</h1>
+            <form method="post" action="/register" onsubmit="return validatePassword()">
+                <input type="hidden" name="form_type" value="register">
+                <div class="form-group">
+                    <label for="firstname">First Name:</label>
+                    <input type="text" id="firstname" name="firstname" required>
+                </div>
+                <div class="form-group">
+                    <label for="lastname">Last Name:</label>
+                    <input type="text" id="lastname" name="lastname" required>
+                </div>
+                <div class="form-group">
+                    <label for="username">Username:</label>
+                    <input type="text" id="username" name="username" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="mobile">Mobile:</label>
+                    <input type="text" id="mobile" name="mobile" required>
+                </div>
+                <div class="form-group">
+                    <label for="address">Address:</label>
+                    <input type="text" id="address" name="address" required>
+                </div>
+                <div class="form-group">
+                    <label for="city">City:</label>
+                    <input type="text" id="city" name="city" required>
+                </div>
+                <div class="form-group">
+                    <label for="state">State:</label>
+                    <input type="text" id="state" name="state" required>
+                </div>
+                <div class="form-group">
+                    <label for="zip">Zip Code:</label>
+                    <input type="text" id="zip" name="zip" required>
+                </div>
+                <div class="form-group">
+                    <label for="ssn">SSN:</label>
+                    <input type="text" id="ssn" name="ssn" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password:</label>
+                    <input type="password" id="pswd" name="pswd" required>
+                </div>
+                <div class="form-group">
+                    <label for="confirm_password">Confirm Password:</label>
+                    <input type="password" id="confirm_password" name="confirm_password" required>
+                </div>
+                <div id="passwordError" style="color:red; display:none;">Passwords do not match!</div>
+                <button type="submit">Register</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

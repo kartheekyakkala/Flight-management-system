@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Authentication - Flight Management System</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script>
+        function showForm(formType) {
+            if (formType === 'login') {
+                document.getElementById('loginForm').style.display = 'block';
+                document.getElementById('registerForm').style.display = 'none';
+                document.getElementById('loginBtn').classList.add('active');
+                document.getElementById('registerBtn').classList.remove('active');
+            } else {
+                document.getElementById('loginForm').style.display = 'none';
+                document.getElementById('registerForm').style.display = 'block';
+                document.getElementById('loginBtn').classList.remove('active');
+                document.getElementById('registerBtn').classList.add('active');
+            }
+        }
+    </script>
+</head>
+<body onload="showForm('login')">
+    <div class="container">
+        <div class="form-switch">
+            <button id="loginBtn" onclick="showForm('login')">Login</button>
+            <button id="registerBtn" onclick="showForm('register')">Register</button>
+        </div>
+        <div id="loginForm">
+            <h1>Login</h1>
+            <form method="post" action="/login">
+                <input type="hidden" name="form_type" value="login">
+                <div class="form-group">
+                    <label for="role">Role:</label>
+                    <div class="input-container">
+                        <i class="fa fa-user-tag icon"></i>
+                        <select id="role" name="role" required>
+                            <option value="admin">Admin</option>
+                            <option value="customer">customer</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email:</label>
+                    <div class="input-container">
+                        <i class="fa fa-envelope icon"></i>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password:</label>
+                    <div class="input-container">
+                        <i class="fa fa-lock icon"></i>
+                        <input type="password" id="password" name="password" required>
+                    </div>
+                </div>
+                <button type="submit">Login</button>
+            </form>
+        </div>
+        <div id="registerForm" style="display:none;">
+            <h1>Register</h1>
+            <form method="post" action="/register">
+                <input type="hidden" name="form_type" value="register">
+                <div class="form-group">
+                    <label for="name">Name:</label>
+                    <div class="input-container">
+                        <i class="fa fa-user icon"></i>
+                        <input type="text" id="name" name="name" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email:</label>
+                    <div class="input-container">
+                        <i class="fa fa-envelope icon"></i>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="mobile">Mobile:</label>
+                    <div class="input-container">
+                        <i class="fa fa-phone icon"></i>
+                        <input type="text" id="mobile" name="mobile" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password:</label>
+                    <div class="input-container">
+                        <i class="fa fa-lock icon"></i>
+                        <input type="password" id="password" name="password" required>
+                    </div>
+                </div>
+                <button type="submit">Register</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

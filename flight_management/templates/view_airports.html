@@ -1,0 +1,91 @@
+{% extends 'base.html' %}
+
+{% block title %}View Airports{% endblock %}
+
+{% block content %}
+<style>
+    .container {
+        padding: 20px;
+    }
+
+    .card-list {
+        list-style-type: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .card-item {
+        display: flex;
+        align-items: center;
+        background-color: #fff;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        margin: 10px 0;
+        padding: 20px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        justify-content: space-between;
+    }
+
+    .card-content {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .card-content h2 {
+        margin: 0 0 10px 0;
+        color: #004d40; /* Dark teal */
+    }
+
+    .card-content p {
+        margin: 5px 0;
+        color: #333;
+    }
+
+    .card-buttons {
+        display: flex;
+        align-items: center;
+    }
+
+    .card-buttons a {
+        text-decoration: none;
+        color: #fff;
+        background-color: #007bff;
+        padding: 10px 15px;
+        border-radius: 4px;
+        margin: 0 5px;
+        font-size: 14px;
+    }
+
+    .card-buttons a:hover {
+        background-color: #0056b3;
+    }
+
+    .card-buttons a.delete {
+        background-color: #dc3545;
+    }
+
+    .card-buttons a.delete:hover {
+        background-color: #c82333;
+    }
+</style>
+
+<div class="container">
+   
+    <ul class="card-list">
+        <h1>View Airports</h1>
+        {% for airport in airports %}
+        <li class="card-item">
+            <div class="card-content">
+                <h2>{{ airport['airport_name'] }}</h2>
+                <p><strong>Short Name:</strong> {{ airport['short_name'] }}</p>
+                <p><strong>Location:</strong> {{ airport['location'] }}</p>
+                <p><strong>Description:</strong> {{ airport['description'] }}</p>
+            </div>
+            <div class="card-buttons">
+                <a href="{{ url_for('edit_airport', id=airport['_id']) }}">Edit</a>
+            </div>
+        </li>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock %}

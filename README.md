@@ -6,8 +6,7 @@ maintain a well-maintained fleet. Booking management is crucial; administrators 
 ● Manage airport operations: create, delete, and edit details such as facilities and operational hours.<br/>
 ● Oversee flight management: create, delete, and modify flight schedules, assign aircraft, and maintain accurate flight information.<br/>
 ● Handle aircraft management: add, update, and remove aircraft details to ensure fleet efficiency and safety.<br/>
-● Monitor booking management: oversee passenger bookings, address issues promptly, approve booking cancellations and ensure smooth.<br/>
-reservations.<br/>
+● Monitor booking management: oversee passenger bookings, address issues promptly, approve booking cancellations and ensure smooth reservations.<br/>
 **Passenger:** <br/>
 ● Register and log in: create an account and access personalized features and preferences.<br/>
 ● View and select flights: search for available flights, view schedules, and select travel options such as First Class, Business Class, Economy.<br/>
